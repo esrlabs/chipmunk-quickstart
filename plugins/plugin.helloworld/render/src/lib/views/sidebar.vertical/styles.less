@@ -1,0 +1,26 @@
+
+@import '../../../../../../theme/variables.less';
+
+:host {
+    position: absolute;
+    display: block;
+    top:0.5rem;
+    left:0.5rem;
+    right: 0.5rem;
+    bottom: 0.5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    & * {
+        color: @scheme-color-0;
+    }
+    & .actions{
+        position: relative;
+        margin: 1rem 0;
+        & button {
+            position: relative;
+            display: block;
+            margin: 8px;
+        }
+        
+    }
+}

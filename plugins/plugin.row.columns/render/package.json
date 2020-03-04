@@ -1,0 +1,8 @@
+{
+  "name": "rowcolumns",
+  "version": "1.0.0",
+  "peerDependencies": {
+    "@angular/common": "^8.2.12",
+    "@angular/core": "^8.2.12"
+  }
+}
