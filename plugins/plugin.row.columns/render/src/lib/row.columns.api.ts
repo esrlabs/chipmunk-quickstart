@@ -1,32 +1,51 @@
 import * as Toolkit from 'chipmunk.client.toolkit';
 
+// Delimiter for CSV files.
 export const CDelimiter = ';';
 
+// For now chipmunk supports only predefined count of columns. Developer cannot change 
+// it dynamically. Here we are defining a columns headers
 export const CColumnsHeaders = [
-    'Column 1',
-    'Column 2',
-    'Column 3',
-    'Column 4',
-    'Column 5',
-    'Column 6',
-    'Column 7',
-    'Column 8',
-    'Column 9',
-    'Column 10',
+    'A',
+    'B',
+    'C',
+    'D',
+    'F',
+    'G',
+    'H',
+    'I',
+    'J',
+    'K',
 ];
 
+/**
+ * @class ColumnsAPI
+ * @description Implementation of custom row's render, based on TypedRowRenderAPIColumns
+ */
 export class ColumnsAPI extends Toolkit.TypedRowRenderAPIColumns {
 
     constructor() {
         super();
     }
 
+    /**
+     * Returns list of column's headers
+     * @returns { string[] } - column's headers
+     */
     public getHeaders(): string[] {
         return CColumnsHeaders;
     }
 
+    /**
+     * Should returns parsed row value as array of columns. Length of columns here
+     * should be equal to length of columns (see getHeaders)
+     * @param str { string } - string value of row
+     * @returns { string[] } - values of columns for row
+     */
     public getColumns(str: string): string[] {
         const columns: string[] = str.split(CDelimiter);
+        // Because we don't know, how much columns file will have, we are adding missed
+        // or removing no needed columns
         if (columns.length < CColumnsHeaders.length) {
             for (let i = CColumnsHeaders.length - columns.length; i >= 0; i += 1) {
                 columns.push('-');
@@ -38,9 +57,14 @@ export class ColumnsAPI extends Toolkit.TypedRowRenderAPIColumns {
         return columns;
     }
 
+    /**
+     * This method will be called by chipmunk's core once before render column's headers.
+     * @returns { Array<{ width: number, min: number }> } - default width and minimal width for
+     * each column
+     */
     public getDefaultWidths(): Array<{ width: number, min: number }> {
         return [
-            { width: 150, min: 30 },
+            { width: 50, min: 30 },
             { width: 50, min: 30 },
             { width: 50, min: 30 },
             { width: 50, min: 30 },

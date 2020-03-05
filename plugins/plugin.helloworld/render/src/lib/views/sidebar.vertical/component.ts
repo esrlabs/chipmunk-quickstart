@@ -1,6 +1,7 @@
 // tslint:disable:no-inferrable-types
 
 import { Component, OnDestroy, AfterViewInit, Input, ChangeDetectorRef } from '@angular/core';
+import * as Toolkit from 'chipmunk.client.toolkit';
 
 export enum EHostEvents {
     time = 'time',
@@ -11,8 +12,6 @@ export enum EHostCommands {
     stop = 'stop',
     resume = 'resume',
 }
-
-import * as Toolkit from 'chipmunk.client.toolkit';
 
 @Component({
     // With predefined selector we can "tell" chipmunk where component should be mount

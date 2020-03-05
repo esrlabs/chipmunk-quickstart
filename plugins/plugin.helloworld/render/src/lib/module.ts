@@ -13,6 +13,11 @@ import { MatButtonModule } from '@angular/material';
     exports: [ SidebarVerticalComponent]
 })
 
+/**
+ * @class PluginModule
+ * @description To make available this module for chipmunk, module
+ * should be extended from PluginNgModule
+ */
 export class PluginModule extends Toolkit.PluginNgModule {
 
     constructor() {
