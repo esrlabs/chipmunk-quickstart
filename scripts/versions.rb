@@ -1,7 +1,7 @@
 require 'json'
 require 'open-uri'
 
-VERSIONS_FILE_URL = "https://raw.githubusercontent.com/esrlabs/chipmunk-plugins-store/master/versions.json";
+VERSIONS_FILE_URL = "https://raw.githubusercontent.com/esrlabs/chipmunk/master/versions.json";
 
 class Versions
 

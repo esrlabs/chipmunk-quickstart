@@ -64,16 +64,19 @@ class Plugin
     copy_dist(backend.get_path, "#{dest}/process") if backend.get_state
     copy_dist(frontend.get_path, "#{dest}/render") if frontend.get_state
     file_name = self.class.get_name(@name, @versions.get_hash, '999.999.999')
-    self.class.add_info(
-      dest,
-      @name,
-      '',
-      file_name,
-      '999.999.999',
-      @versions.get_hash,
-      @versions.get_dep_hash(dependencies),
-      dependencies
-    )
+    self.class.add_info(dest, {
+      'name' => @name,
+      'file' => file_name,
+      'version' => '999.999.999',
+      'hash' => @versions.get_hash,
+      'phash' => @versions.get_dep_hash(dependencies),
+      'url' => '',
+      'display_name' => @name,
+      'description' => @name,
+      'readme' => '',
+      'icon' => '',
+      'dependencies' => dependencies
+    })
     true
   end
 
@@ -114,18 +117,10 @@ class Plugin
     dependencies
   end
 
-  def self.add_info(dest, name, url, file_name, version, hash, phash, dependencies)
-    info = {
-      'name' => name,
-      'file' => file_name,
-      'version' => version,
-      'hash' => hash,
-      'phash' => phash,
-      'url' => url,
-      'dependencies' => dependencies
-    }
+  def self.add_info(dest, entry)
     File.open("./#{dest}/info.json", 'w') do |f|
-      f.write(info.to_json)
+      f.write(entry.to_json)
     end
   end
+
 end
