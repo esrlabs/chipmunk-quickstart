@@ -57,7 +57,7 @@ local/**/*
 **/*.node
 *portable.tgz
 **/*.metadata.json
-chipmunk.frontend.angular
+chipmunk-angular
 releases
 **/package-lock.json
 
