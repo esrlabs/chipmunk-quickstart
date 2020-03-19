@@ -44,16 +44,16 @@ class PluginFrontendAngular
     if !File.directory?("#{ANGULAR_DEST_FOLDER}/#{PLUGIN_FRONTEND_ANGULAR_BASE_NAME}/projects/#{@package_json['name']}")
       Rake.cd "#{ANGULAR_DEST_FOLDER}/#{PLUGIN_FRONTEND_ANGULAR_BASE_NAME}" do
         begin
-            puts "Generate library \"#{@package_json['name']}\""
-            Rake.sh "./node_modules/.bin/ng generate library #{@package_json['name']}"
-            puts 'Remove default sources'
-            Rake.rm_r("./projects/#{@package_json['name']}", force: true)
-            puts 'Create empty folder'
-            Rake.mkdir("./projects/#{@package_json['name']}")
+          puts "Generate library \"#{@package_json['name']}\""
+          Rake.sh "./node_modules/.bin/ng generate library #{@package_json['name']}"
+          puts 'Remove default sources'
+          Rake.rm_r("./projects/#{@package_json['name']}", force: true)
+          puts 'Create empty folder'
+          Rake.mkdir("./projects/#{@package_json['name']}")
         rescue StandardError => e
           puts e.message
           return false
-          end
+        end
       end
       begin
         puts 'Copy plugin sources'
@@ -80,5 +80,26 @@ class PluginFrontendAngular
 
   def get_dist_path
     "#{ANGULAR_DEST_FOLDER}/#{PLUGIN_FRONTEND_ANGULAR_BASE_NAME}/dist/#{@package_json['name']}"
+  end
+
+  def synch
+    unless File.directory?("#{ANGULAR_DEST_FOLDER}/#{PLUGIN_FRONTEND_ANGULAR_BASE_NAME}")
+      puts "Angular isn't installed yet."
+      return
+    end
+    unless File.directory?("#{ANGULAR_DEST_FOLDER}/#{PLUGIN_FRONTEND_ANGULAR_BASE_NAME}/dist/#{@package_json['name']}")
+      puts "Plugin isn't installed yet."
+      return
+    end
+    begin
+      puts 'Remove original sources'
+      Rake.rm_r("#{@path}/.", force: true)
+      puts 'Copy source from Angular Projects'
+      Rake.cp_r("#{ANGULAR_DEST_FOLDER}/#{PLUGIN_FRONTEND_ANGULAR_BASE_NAME}/projects/#{@package_json['name']}/.", @path.to_s, verbose: false)
+      puts 'Synch is done'
+    rescue StandardError => e
+      puts e.message
+      false
+    end
   end
 end

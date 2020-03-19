@@ -68,6 +68,14 @@ class PluginFrontend
     @angular.is
   end
 
+  def synch
+    if !@angular.is
+      puts "Plugin \"#{@path}\" doesn't have angular part. No need to synch."
+      return
+    end
+    @angular.synch
+  end
+
   def self.get_package_json(path)
     package_json_str = File.read(path)
     package_json = JSON.parse(package_json_str)

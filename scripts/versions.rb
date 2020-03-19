@@ -7,7 +7,7 @@ class Versions
 
     def initialize()
         puts "Reading versions file from \"#{VERSIONS_FILE_URL}\""
-        @versions_str = open(VERSIONS_FILE_URL) { |f| f.read }
+        @versions_str = URI.open(VERSIONS_FILE_URL) { |f| f.read }
         @versions = JSON.parse(@versions_str)
         puts "Next versions of frameworks/modules will be used:\n"
         puts "\telectron: #{@versions['electron']}\n"

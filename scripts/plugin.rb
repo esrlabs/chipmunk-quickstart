@@ -80,6 +80,23 @@ class Plugin
     true
   end
 
+  def synch
+    if !File.directory?(PLUGIN_RELEASE_FOLDER) || !File.directory?("#{PLUGIN_RELEASE_FOLDER}/#{@name}")
+      puts "Plugin \"#{@name}\" wasn't build yet"
+      return
+    end
+    frontend = PluginFrontend.new(@path, @versions.get)
+    if !frontend.exist
+      puts "Plugin \"#{@name}\" doesn't have frontend. No need to synch."
+      return
+    end
+    if !frontend.has_angular
+      puts "Plugin \"#{@name}\" doesn't have angular part. No need to synch."
+      return
+    end
+    frontend.synch
+  end
+
   def get_plugin_name
     @name
   end
