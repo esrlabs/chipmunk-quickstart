@@ -7,11 +7,17 @@ require './scripts/plugin.frontend'
 require './scripts/tools'
 
 class Plugin
-  def initialize(path, versions, hard)
+  def initialize(path, versions, hard, version, pack)
     @name = File.basename(path)
     @path = path
     @versions = versions
     @hard = hard
+    @pack = pack
+    @version = if version.nil?
+                 '999.999.999'
+               else
+                 version
+               end
   end
 
   def build
@@ -63,20 +69,23 @@ class Plugin
     end
     copy_dist(backend.get_path, "#{dest}/process") if backend.get_state
     copy_dist(frontend.get_path, "#{dest}/render") if frontend.get_state
-    file_name = self.class.get_name(@name, @versions.get_hash, '999.999.999')
+    file_name = self.class.get_name(@name, @versions.get_hash, @version)
     self.class.add_info(dest, {
-      'name' => @name,
-      'file' => file_name,
-      'version' => '999.999.999',
-      'hash' => @versions.get_hash,
-      'phash' => @versions.get_dep_hash(dependencies),
-      'url' => '',
-      'display_name' => @name,
-      'description' => @name,
-      'readme' => '',
-      'icon' => '',
-      'dependencies' => dependencies
-    })
+                          'name' => @name,
+                          'file' => file_name,
+                          'version' => @version,
+                          'hash' => @versions.get_hash,
+                          'phash' => @versions.get_dep_hash(dependencies),
+                          'url' => '',
+                          'display_name' => @name,
+                          'description' => @name,
+                          'readme' => '',
+                          'icon' => '',
+                          'dependencies' => dependencies
+                        })
+    if @pack
+      compress("#{PLUGIN_RELEASE_FOLDER}/#{file_name}", PLUGIN_RELEASE_FOLDER, @name)
+    end
     true
   end
 
@@ -86,11 +95,11 @@ class Plugin
       return
     end
     frontend = PluginFrontend.new(@path, @versions.get)
-    if !frontend.exist
+    unless frontend.exist
       puts "Plugin \"#{@name}\" doesn't have frontend. No need to synch."
       return
     end
-    if !frontend.has_angular
+    unless frontend.has_angular
       puts "Plugin \"#{@name}\" doesn't have angular part. No need to synch."
       return
     end
@@ -139,5 +148,4 @@ class Plugin
       f.write(entry.to_json)
     end
   end
-
 end

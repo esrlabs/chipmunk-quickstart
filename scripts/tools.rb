@@ -28,3 +28,11 @@ def putsAccent(text, err = false)
     puts "\n#{border}\n#{text}\n#{border}\n\n"
   end
 end
+
+def compress(output_file, pwd, dest)
+  if OS.windows?
+    Rake.sh "tar -czf #{output_file} -C #{pwd} #{dest} --force-local"
+  else
+    Rake.sh "tar -czf #{output_file} -C #{pwd} #{dest} "
+  end
+end
