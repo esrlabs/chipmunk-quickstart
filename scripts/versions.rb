@@ -1,30 +1,31 @@
+# frozen_string_literal: true
+
 require 'json'
 require 'open-uri'
 
-VERSIONS_FILE_URL = "https://raw.githubusercontent.com/esrlabs/chipmunk/master/versions.json";
+VERSIONS_FILE_URL = 'https://raw.githubusercontent.com/esrlabs/chipmunk/master/versions.json'
 
 class Versions
+  def initialize
+    puts "Reading versions file from \"#{VERSIONS_FILE_URL}\""
+    @versions_str = URI.open(VERSIONS_FILE_URL, &:read)
+    @versions = JSON.parse(@versions_str)
+    puts "Next versions of frameworks/modules will be used:\n"
+    puts "\telectron: #{@versions['electron']}\n"
+    puts "\telectron-rebuild: #{@versions['electron-rebuild']}\n"
+    puts "\tchipmunk.client.toolkit: #{@versions['chipmunk.client.toolkit']}\n"
+    puts "\tchipmunk.plugin.ipc: #{@versions['chipmunk.plugin.ipc']}\n"
+    puts "\tchipmunk-client-material: #{@versions['chipmunk-client-material']}\n"
+    puts "\tangular-core: #{@versions['angular-core']}\n"
+    puts "\tangular-material: #{@versions['angular-material']}\n"
+    puts "\tforce: #{@versions['force']}\n"
+  end
 
-    def initialize()
-        puts "Reading versions file from \"#{VERSIONS_FILE_URL}\""
-        @versions_str = URI.open(VERSIONS_FILE_URL) { |f| f.read }
-        @versions = JSON.parse(@versions_str)
-        puts "Next versions of frameworks/modules will be used:\n"
-        puts "\telectron: #{@versions['electron']}\n"
-        puts "\telectron-rebuild: #{@versions['electron-rebuild']}\n"
-        puts "\tchipmunk.client.toolkit: #{@versions['chipmunk.client.toolkit']}\n"
-        puts "\tchipmunk.plugin.ipc: #{@versions['chipmunk.plugin.ipc']}\n"
-        puts "\tchipmunk-client-material: #{@versions['chipmunk-client-material']}\n"
-        puts "\tangular-core: #{@versions['angular-core']}\n"
-        puts "\tangular-material: #{@versions['angular-material']}\n"
-        puts "\tforce: #{@versions['force']}\n"
-    end
+  def get
+    @versions
+  end
 
-    def get
-        return @versions
-    end
-
-    def get_hash
+  def get_hash
     p = [
       @versions['electron'].split('.'),
       @versions['electron-rebuild'].split('.'),
