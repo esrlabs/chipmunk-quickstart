@@ -6,9 +6,17 @@ require 'open-uri'
 VERSIONS_FILE_URL = 'https://raw.githubusercontent.com/esrlabs/chipmunk/master/versions.json'
 
 class Versions
-  def initialize
-    puts "Reading versions file from \"#{VERSIONS_FILE_URL}\""
-    @versions_str = URI.open(VERSIONS_FILE_URL, &:read)
+  def initialize(ver_file)
+    if ver_file.nil?
+      puts "Reading versions file from \"#{VERSIONS_FILE_URL}\""
+      @versions_str = URI.open(VERSIONS_FILE_URL, &:read)
+    else
+      if !File.file?(ver_file)
+        raise "Fail to find versions file: #{ver_file}"
+      end
+      puts "Reading versions file from \"#{ver_file}\""
+      @versions_str = File.read("#{ver_file}")
+    end
     @versions = JSON.parse(@versions_str)
     puts "Next versions of frameworks/modules will be used:\n"
     puts "\telectron: #{@versions['electron']}\n"
