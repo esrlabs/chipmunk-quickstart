@@ -49,6 +49,6 @@ task :synch, [:target, :vers] do |_t, args|
     putsAccent('Please define target to be synch like: "rake synch[./plugins/plugin.complex]"', true)
   end
   versions = Versions.new(args.vers)
-  plugin = Plugin.new(args.target, versions, false)
+  plugin = Plugin.new(args.target, versions, false, nil, false)
   plugin.synch
 end
