@@ -130,7 +130,7 @@ Now after chipmunk will be started in logs we will see something like it:
 [1585337256971][  +146ms][  DEBUG][plugin: plugin.helloworld]: Debugger listening on ws://127.0.0.1:9240/9d87e0bb-8215-4261-8beb-d8527dbe7dc0
 For help, see: https://nodejs.org/en/docs/inspector
 ```
-So, now we know a port, which can be used for debugger `:9249`.
+So, now we know a port, which can be used for debugger `:9240`.
 
 All we need to add debug-configuration in VSCode
 ```
@@ -215,3 +215,21 @@ Synch angular sources
 rake synch[path_to_plugin, path_to_versions_file]
 ```
 This is actual only for angular-plugins. Because sources of the plugin will be copied from `./plugins/plugin.helloworld` into `./chipmunk-angular/projects/helloworld` a developer has to work in angular eco-system (to have working references to modules/libraries). To quickly copy sources from angular to sources back, command `synch` could be used.
+
+## Recommended way of developing
+```
+# Clone chipmunk quickstart
+git clone https://github.com/esrlabs/chipmunk-quickstart.git
+cd chipmunk-quickstart
+
+# Select plugin, which could be used as a template and copy it
+cp -r ./plugins/plugin.helloworld ./plugins/plugin.myplugin
+
+#Rename plugin in all package.json files (in process folder and render)
+
+#Ref plugin with github repo
+cd ./plugins/plugin.myplugin
+git init
+git remote add url_to_plugin_repo
+```
+This is not one way of developing. You can store sources of your plugin anywhere and provide the correct path to in with build command. But this way is good for plugins with angular part because quickstart creates angular eco-system for it.
