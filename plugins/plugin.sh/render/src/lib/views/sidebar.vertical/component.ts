@@ -21,7 +21,7 @@ interface IState {
 const state: Toolkit.ControllerState<IState> = new Toolkit.ControllerState<IState>();
 
 @Component({
-    selector: Toolkit.EViewsTypes.sidebarVertical,
+    selector: 'lib-sidebar-ver',
     templateUrl: './template.html',
     styleUrls: ['./styles.less']
 })

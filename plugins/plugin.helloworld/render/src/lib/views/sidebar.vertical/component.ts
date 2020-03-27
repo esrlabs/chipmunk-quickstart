@@ -15,7 +15,7 @@ export enum EHostCommands {
 
 @Component({
     // With predefined selector we can "tell" chipmunk where component should be mount
-    selector: Toolkit.EViewsTypes.sidebarVertical,
+    selector: 'lib-sidebar-ver',
     templateUrl: './template.html',
     styleUrls: ['./styles.less']
 })
