@@ -1,7 +1,7 @@
 import * as Toolkit from 'chipmunk.client.toolkit';
 
 // Delimiter for CSV files.
-export const CDelimiter = ';';
+export const CDelimiters = [';', ',', '\t'];
 
 // For now chipmunk supports only predefined count of columns. Developer cannot change 
 // it dynamically. Here we are defining a columns headers
@@ -17,6 +17,8 @@ export const CColumnsHeaders = [
     'J',
     'K',
 ];
+
+let delimiter: string | undefined;
 
 /**
  * @class ColumnsAPI
@@ -43,7 +45,7 @@ export class ColumnsAPI extends Toolkit.TypedRowRenderAPIColumns {
      * @returns { string[] } - values of columns for row
      */
     public getColumns(str: string): string[] {
-        const columns: string[] = str.split(CDelimiter);
+        const columns: string[] = str.split(this._getDelimiter(str));
         // Because we don't know, how much columns file will have, we are adding missed
         // or removing no needed columns
         if (columns.length < CColumnsHeaders.length) {
@@ -52,7 +54,7 @@ export class ColumnsAPI extends Toolkit.TypedRowRenderAPIColumns {
             }
         } else if (columns.length > CColumnsHeaders.length) {
             const rest: string[] = columns.slice(CColumnsHeaders.length - 2, columns.length);
-            columns.push(rest.join(CDelimiter));
+            columns.push(rest.join(this._getDelimiter(str)));
         }
         return columns;
     }
@@ -75,6 +77,22 @@ export class ColumnsAPI extends Toolkit.TypedRowRenderAPIColumns {
             { width: 50, min: 30 },
             { width: 50, min: 30 },
         ];
+    }
+
+    private _getDelimiter(input: string): string {
+        if (delimiter !== undefined) {
+            return delimiter;
+        } else {
+            let score: number = 0;
+            CDelimiters.forEach((del: string) => {
+                let length = input.split(del).length;
+                if (length > score) {
+                    score = length;
+                    delimiter = del;
+                }
+            });    
+        }
+        return delimiter;        
     }
 
 }

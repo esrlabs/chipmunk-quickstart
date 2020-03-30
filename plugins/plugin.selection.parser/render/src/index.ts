@@ -17,14 +17,8 @@ export class SelectionParser extends Toolkit.SelectionParser {
      * @returns { undefined } - in case if menu item should not be shown in context menu
      */
     public getParserName(selection: string): string | undefined {
-        try {
-            const date: Date = new Date(selection);
-            return this._isValidDate(date) ? 'Convert to DateTime' : undefined;
-        } catch (e) {
-            // Selection cannot be coverted into DateTime.
-            // Return undefined to do NOT show parser in context menu
-            return undefined;
-        }
+        const date: Date | undefined = this._getDate(selection);
+        return date instanceof Date ? 'Convert to DateTime' : undefined;
     }
 
     /**
@@ -35,13 +29,19 @@ export class SelectionParser extends Toolkit.SelectionParser {
      * @returns { string } - parsed string
      */
     public parse(selection: string, themeTypeRef: Toolkit.EThemeType): string {
-        return (new Date(selection)).toUTCString();
+        const date: Date | undefined = this._getDate(selection);
+        return date !== undefined ? date.toUTCString() : '';
     }
 
-    private _isValidDate(date: Date | number) {
-        const num: number = date as number;
-        return date instanceof Date && !isNaN(num);
-      }
+    private _getDate(selection: string): Date | undefined {
+        const num: number = parseInt(selection, 10);
+        if (!isFinite(num) || isNaN(num)) {
+            return undefined;
+        }
+        const date: Date = new Date(num);
+        return date instanceof Date ? date : undefined;
+    }
+
 }
 
 // To delivery plugin into chipmunk we should use chipmunk's gateway
