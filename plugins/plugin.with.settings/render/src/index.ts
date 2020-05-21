@@ -1,7 +1,7 @@
 // tslint:disable: max-classes-per-file
 
 import * as Toolkit from 'chipmunk.client.toolkit';
-import { Field, ElementInputStringRef, IField } from 'chipmunk.client.toolkit';
+import { Field, ElementInputStringRef } from 'chipmunk.client.toolkit';
 
 /**
  * To create settings field we should use abstract class Field<T>.
